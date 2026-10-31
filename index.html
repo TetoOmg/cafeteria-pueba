@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cafetería Bodrio — Apple Fluid Interface Experience</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            canvas: '#000000',
+                            card: 'rgba(28, 28, 30, 0.75)',
+                            elevated: 'rgba(44, 44, 46, 0.85)',
+                            border: 'rgba(255, 255, 255, 0.12)',
+                            accent: '#30D158',   /* Apple Mint Green */
+                            blue: '#0A84FF',     /* Apple System Blue */
+                            purple: '#BF5AF2',   /* Apple System Purple */
+                            orange: '#FF9F0A',   /* Apple System Amber */
+                            pink: '#FF375F'      /* Apple System Pink */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'sans-serif'],
+                        mono: ['"SF Mono"', 'ui-monospace', 'Menlo', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Apple HIG Core Typography & Smooth Scrolling */
+        :root {
+            --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+        }
+
+        body {
+            font-family: var(--apple-font);
+            background-color: #000000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Glassmorphism with Saturation & Specular Highlight Border */
+        .apple-glass {
+            background: rgba(28, 28, 30, 0.72);
+            backdrop-filter: blur(30px) saturate(190%);
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .apple-glass-nav {
+            background: rgba(12, 12, 14, 0.78);
+            backdrop-filter: blur(35px) saturate(200%);
+            -webkit-backdrop-filter: blur(35px) saturate(200%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .apple-card {
+            background: rgba(22, 22, 24, 0.75);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            will-change: transform;
+            transition: border-color 0.25s ease, box-shadow 0.3s ease;
+        }
+
+        .apple-card:hover {
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Instant Response Scale Effect */
+        .apple-pressable {
+            transition: transform 0.12s cubic-bezier(0, 0, 0.2, 1), background-color 0.2s ease;
+            will-change: transform;
+        }
+        .apple-pressable:active {
+            transform: scale(0.96) !important;
+        }
+
+        /* Negative Letter Spacing for Headlines */
+        .tracking-apple-tight {
+            letter-spacing: -0.035em;
+        }
+        .tracking-apple-subhead {
+            letter-spacing: -0.015em;
+        }
+
+        /* Sheet Drawer Bottom Transition Shadow */
+        .sheet-shadow {
+            box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Custom iOS Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-apple-accent selection:text-black min-h-screen flex flex-col justify-between">
+
+    <!-- TOP NAVIGATION BAR (Apple Translucent Glass) -->
+    <header class="sticky top-0 z-40 apple-glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                
+                <!-- BRAND LOGO -->
+                <a href="#inicio" class="flex items-center gap-3 apple-pressable">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-apple-accent via-emerald-400 to-apple-purple p-0.5 flex items-center justify-center shadow-lg shadow-apple-accent/20">
+                        <div class="w-full h-full bg-black rounded-[10px] flex items-center justify-center">
+                            <!-- Coffee Cup SVG -->
+                            <svg class="w-5 h-5 text-apple-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-sans text-base sm:text-lg font-extrabold tracking-apple-tight text-white block">
+                            Cafetería Bodrio
+                        </span>
+                        <span class="block text-[10px] text-zinc-400 -mt-1 font-semibold tracking-wider uppercase">CULIACÁN • FLUID UI</span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION -->
+                <nav class="hidden md:flex items-center gap-1 bg-zinc-900/70 p-1.5 rounded-full border border-white/10">
+                    <a href="#inicio" class="px-4 py-1.5 rounded-full text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 transition-colors">Inicio</a>
+                    <a href="#menu" class="px-4 py-1.5 rounded-full text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 transition-colors">Menú</a>
+                    <a href="#personalizador" class="px-4 py-1.5 rounded-full text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 transition-colors">Diseñador</a>
+                    <a href="#ubicacion" class="px-4 py-1.5 rounded-full text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/10 transition-colors">Sede Culiacán</a>
+                </nav>
+
+                <!-- CART TRIGGER BUTTON -->
+                <div class="flex items-center gap-3">
+                    <button id="cartTriggerBtn" class="apple-pressable relative px-4 py-2 rounded-full apple-glass text-white font-semibold text-xs flex items-center gap-2.5 hover:border-white/30 border border-white/15">
+                        <svg class="w-4 h-4 text-apple-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Carrito</span>
+                        <span id="cartBadge" class="bg-apple-accent text-black font-extrabold text-[10px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center transition-transform scale-0 shadow-md">0</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SHOWCASE -->
+    <section id="inicio" class="relative pt-12 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
+        <!-- Ambient Blur Orbs -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-apple-accent/10 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[400px] h-[400px] bg-apple-purple/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Hero Text -->
+                <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-apple-accent text-xs font-semibold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-apple-accent animate-pulse"></span>
+                        Gestos Fluidos & Física de Resortes WWDC
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-apple-tight text-white leading-[1.05]">
+                        Café de especialidad. <br class="hidden sm:inline">
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-apple-accent via-emerald-300 to-apple-purple">
+                            Vasos de meme rancio.
+                        </span>
+                    </h1>
+
+                    <p class="text-zinc-400 text-base sm:text-xl max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed tracking-apple-subhead">
+                        Diseñado bajo los principios de interfaz fluida de Apple. Manipulación directa de objetos, resistencia elástica en bordes y renderizado vectorial de memes en tiempo real.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#personalizador" class="apple-pressable w-full sm:w-auto px-8 py-4 rounded-full bg-apple-accent text-black font-bold text-sm hover:bg-emerald-400 flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(48,209,88,0.3)]">
+                            <span>Crear Mi Vaso Memero</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                        <a href="#menu" class="apple-pressable w-full sm:w-auto px-8 py-4 rounded-full apple-glass text-white font-semibold text-sm hover:border-white/30 text-center">
+                            Explorar Menú
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Interactive 3D Glass Hero Cup -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="w-full max-w-md apple-card rounded-3xl p-8 flex flex-col items-center relative overflow-hidden border border-white/15">
+                        <div class="absolute -top-20 -right-20 w-60 h-60 bg-apple-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="relative w-64 h-80 my-2 flex justify-center items-end">
+                            <!-- Hero Cup Vector SVG -->
+                            <svg class="w-full h-full filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)]" viewBox="0 0 200 260" fill="none">
+                                <path d="M40 50 C40 42 160 42 160 50 L155 65 L45 65 Z" fill="#1c1c1e" stroke="#3a3a3c" stroke-width="2"/>
+                                <rect x="75" y="38" width="50" height="7" rx="3" fill="#0a0a0c"/>
+                                <path d="M45 65 L58 240 C59 248 141 248 142 240 L155 65 Z" fill="#121214" stroke="#30D158" stroke-width="2.5"/>
+                                <path d="M49 105 L151 105 L146 190 L54 190 Z" fill="#1c1c24" stroke="#BF5AF2" stroke-width="1.5"/>
+                                <rect x="60" y="116" width="80" height="60" rx="8" fill="#09090b" stroke="#3a3a3c"/>
+                                <text x="100" y="132" font-family="-apple-system, sans-serif" font-size="7" font-weight="700" fill="#30D158" text-anchor="middle">SOBREPENSANDO</text>
+                                
+                                <!-- Cheems Vector inside hero -->
+                                <g transform="translate(85, 137)">
+                                    <ellipse cx="15" cy="14" rx="10" ry="9" fill="none" stroke="#BF5AF2" stroke-width="1.3"/>
+                                    <path d="M 6 8 L 2 2 L 10 6 Z M 24 8 L 28 2 L 20 6 Z" fill="#BF5AF2"/>
+                                    <circle cx="11" cy="12" r="1.5" fill="#BF5AF2"/>
+                                    <circle cx="19" cy="12" r="1.5" fill="#BF5AF2"/>
+                                    <path d="M 12 18 Q 15 15 18 18" fill="none" stroke="#BF5AF2" stroke-width="1.2"/>
+                                </g>
+
+                                <text x="100" y="168" font-family="-apple-system, sans-serif" font-size="6.5" font-weight="600" fill="#ffffff" text-anchor="middle">A LAS 3:00 AM</text>
+                            </svg>
+                        </div>
+
+                        <div class="w-full text-center mt-2 pt-4 border-t border-white/10">
+                            <span class="text-xs font-semibold text-apple-accent tracking-wider uppercase">Vaso Rancio Edición 2026</span>
+                            <p class="text-xs text-zinc-400 mt-0.5">Fondo con respuesta elástica al tacto</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU DE BODRIOS (iOS Segmented Control + Fluid Pill) -->
+    <section id="menu" class="py-20 border-t border-white/10 bg-zinc-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+                <span class="text-xs font-semibold text-apple-accent uppercase tracking-widest">Catálogo de Bebidas</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-apple-tight text-white">Menú Cafetería Bodrio</h2>
+                <p class="text-zinc-400 text-sm sm:text-base tracking-apple-subhead">
+                    Cada pedido incluye tu vaso de meme con recubrimiento mate antideslizante.
+                </p>
+            </div>
+
+            <!-- iOS SEGMENTED CONTROL TAB BAR WITH FLUID SLIDING PILL -->
+            <div class="flex justify-center mb-12">
+                <div class="relative flex p-1 rounded-full bg-zinc-900/90 border border-white/15 max-w-xl w-full" id="segmentedBar">
+                    <!-- Spring Sliding Background Pill -->
+                    <div id="segmentedPill" class="absolute top-1 bottom-1 bg-white/20 rounded-full shadow-md pointer-events-none" style="left: 4px; width: 23%;"></div>
+
+                    <button onclick="setSegment(0, 'todos')" class="segment-tab relative z-10 flex-1 py-2 text-xs font-semibold text-white text-center transition-colors">Todos</button>
+                    <button onclick="setSegment(1, 'rancias')" class="segment-tab relative z-10 flex-1 py-2 text-xs font-semibold text-zinc-400 hover:text-white text-center transition-colors">Bebidas Rancias</button>
+                    <button onclick="setSegment(2, 'combos')" class="segment-tab relative z-10 flex-1 py-2 text-xs font-semibold text-zinc-400 hover:text-white text-center transition-colors">Combos Bodrio</button>
+                    <button onclick="setSegment(3, 'custom')" class="segment-tab relative z-10 flex-1 py-2 text-xs font-semibold text-zinc-400 hover:text-white text-center transition-colors">Personalizado</button>
+                </div>
+            </div>
+
+            <!-- MENU CARDS GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="menuCardsGrid">
+                <!-- Injected via JavaScript -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MEME CUP INTERACTIVE SVG CUSTOMIZER -->
+    <section id="personalizador" class="py-24 border-t border-white/10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14 space-y-3">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-apple-purple/15 border border-apple-purple/30 text-apple-purple text-xs font-semibold">
+                    Estudio Gráfico Vectorial
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-apple-tight text-white">Diseña Tu Vaso Meme</h2>
+                <p class="text-zinc-400 text-sm sm:text-base">
+                    Personaliza los textos, el personaje y la tinta de acabado en tiempo real.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- Customizer Form Controls (Left) -->
+                <div class="lg:col-span-7 apple-card rounded-3xl p-6 sm:p-8 space-y-6">
+                    
+                    <!-- 1. Meme Template Grid -->
+                    <div>
+                        <label class="block text-xs font-semibold text-apple-accent uppercase tracking-wider mb-3">1. Seleccionar Personaje Meme</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="memeTemplatesContainer">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 2. Text Inputs -->
+                    <div class="space-y-4">
+                        <label class="block text-xs font-semibold text-apple-accent uppercase tracking-wider">2. Frases del Vaso</label>
+                        <div>
+                            <span class="text-xs text-zinc-400 block mb-1">Texto Superior</span>
+                            <input type="text" id="inputTopText" maxlength="24" value="CUANDO NO HAS DORMIDO" oninput="updateCustomCupSVG()" class="w-full bg-zinc-900/90 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-apple-accent font-mono uppercase">
+                        </div>
+                        <div>
+                            <span class="text-xs text-zinc-400 block mb-1">Texto Inferior</span>
+                            <input type="text" id="inputBottomText" maxlength="24" value="Y TIENES JUNTA A LAS 8 AM" oninput="updateCustomCupSVG()" class="w-full bg-zinc-900/90 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-apple-accent font-mono uppercase">
+                        </div>
+                    </div>
+
+                    <!-- 3. Base Drink Selection -->
+                    <div>
+                        <label class="block text-xs font-semibold text-apple-accent uppercase tracking-wider mb-2">3. Bebida Base</label>
+                        <select id="customBaseDrinkSelect" onchange="updateCustomCupSVG()" class="w-full bg-zinc-900/90 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-apple-accent font-semibold">
+                            <option value="85" data-name="Latte de Cheems">Latte de Cheems - $85 MXN</option>
+                            <option value="65" data-name="Espresso Existencial">Espresso Existencial - $65 MXN</option>
+                            <option value="80" data-name="Capuchino Brain-Rot">Capuchino Brain-Rot - $80 MXN</option>
+                            <option value="75" data-name="Té de Gato Llorando">Té de Gato Llorando - $75 MXN</option>
+                            <option value="95" data-name="Frapé Void">Frapé Void - $95 MXN</option>
+                        </select>
+                    </div>
+
+                    <!-- 4. Color Accent Buttons -->
+                    <div>
+                        <label class="block text-xs font-semibold text-apple-accent uppercase tracking-wider mb-3">4. Tinta de Trazo Neón</label>
+                        <div class="flex items-center gap-4">
+                            <button onclick="setCupAccent('#30D158')" class="apple-pressable w-10 h-10 rounded-full bg-[#30D158] border-2 border-white/30 shadow-md"></button>
+                            <button onclick="setCupAccent('#BF5AF2')" class="apple-pressable w-10 h-10 rounded-full bg-[#BF5AF2] border-2 border-white/30 shadow-md"></button>
+                            <button onclick="setCupAccent('#0A84FF')" class="apple-pressable w-10 h-10 rounded-full bg-[#0A84FF] border-2 border-white/30 shadow-md"></button>
+                            <button onclick="setCupAccent('#FF9F0A')" class="apple-pressable w-10 h-10 rounded-full bg-[#FF9F0A] border-2 border-white/30 shadow-md"></button>
+                            <button onclick="setCupAccent('#FF375F')" class="apple-pressable w-10 h-10 rounded-full bg-[#FF375F] border-2 border-white/30 shadow-md"></button>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart Action -->
+                    <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs text-zinc-400 block">Precio Total con Vaso Personalizado</span>
+                            <span id="customCupPriceTag" class="text-2xl font-extrabold text-white tracking-apple-tight">$85 MXN</span>
+                        </div>
+                        <button onclick="addCustomCupToCart()" class="apple-pressable w-full sm:w-auto px-8 py-3.5 rounded-full bg-apple-accent text-black font-extrabold text-sm hover:bg-emerald-400 flex items-center justify-center gap-2 shadow-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            <span>Añadir Vaso Personalizado al Carrito</span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Live Vector SVG Render Preview (Right) -->
+                <div class="lg:col-span-5 flex flex-col items-center sticky top-28">
+                    <div class="w-full apple-card rounded-3xl p-8 flex flex-col items-center relative justify-between min-h-[460px] border border-white/15">
+                        
+                        <div class="text-center w-full">
+                            <span class="text-[10px] font-semibold text-zinc-400 uppercase tracking-widest block">Renderizado Directo SVG</span>
+                            <h4 id="previewDrinkLabel" class="text-base font-bold text-apple-accent mt-0.5">Latte de Cheems</h4>
+                        </div>
+
+                        <!-- LIVE VECTOR SVG DISPLAY -->
+                        <div class="relative w-64 h-80 my-2 flex justify-center items-end">
+                            <svg id="customSVGCanvas" class="w-full h-full filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.95)]" viewBox="0 0 200 260" fill="none">
+                                <!-- Lid -->
+                                <path d="M40 50 C40 42 160 42 160 50 L155 65 L45 65 Z" fill="#1c1c1e" stroke="#3a3a3c" stroke-width="2"/>
+                                <rect x="75" y="38" width="50" height="7" rx="3" fill="#0a0a0c"/>
+                                
+                                <!-- Cup Outer Body -->
+                                <path id="svgCupBorderPath" d="M45 65 L58 240 C59 248 141 248 142 240 L155 65 Z" fill="#121214" stroke="#30D158" stroke-width="2.5"/>
+                                
+                                <!-- Sleeve Band -->
+                                <path d="M49 105 L151 105 L146 195 L54 195 Z" fill="#1a1a20" stroke="#3a3a3c" stroke-width="1.5"/>
+                                
+                                <!-- Meme Display Frame -->
+                                <rect id="svgFrameBorder" x="58" y="115" width="84" height="70" rx="8" fill="#09090b" stroke="#30D158" stroke-width="1.2"/>
+                                
+                                <!-- Top Text -->
+                                <text id="svgTopTextElement" x="100" y="128" font-family="-apple-system, sans-serif" font-size="6.5" font-weight="700" fill="#30D158" text-anchor="middle">CUANDO NO HAS DORMIDO</text>
+
+                                <!-- Meme Inner Graphic Slot -->
+                                <g id="svgMemeGraphicSlot" transform="translate(82, 133)">
+                                    <!-- Dynamic Vector Paths -->
+                                </g>
+
+                                <!-- Bottom Text -->
+                                <text id="svgBottomTextElement" x="100" y="176" font-family="-apple-system, sans-serif" font-size="6.5" font-weight="600" fill="#ffffff" text-anchor="middle">Y TIENES JUNTA A LAS 8 AM</text>
+                            </svg>
+                        </div>
+
+                        <div class="w-full text-center bg-white/5 rounded-2xl p-3 border border-white/10">
+                            <span class="text-xs text-zinc-400 font-medium">Material Térmico Reciclable con Tinta Neón UV</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- STORE LOCATION & INFO -->
+    <section id="ubicacion" class="py-20 border-t border-white/10 bg-zinc-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-10 items-center">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs font-semibold text-apple-accent uppercase tracking-widest block">Barra de Especialidad</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-apple-tight text-white">Sede Culiacán</h2>
+                    <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
+                        Ubicados en el corazón de Sinaloa. Ven por tu brebaje con extracción artesanal y llévate un vaso coleccionable.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4 apple-card p-4 rounded-2xl">
+                            <div class="p-3 bg-white/5 rounded-xl text-apple-accent border border-white/10">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Dirección</h4>
+                                <p class="text-zinc-400 text-xs mt-0.5">Av. Álvaro Obregón #1042, Col. Centro, Culiacán, Sinaloa</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 apple-card p-4 rounded-2xl">
+                            <div class="p-3 bg-white/5 rounded-xl text-apple-purple border border-white/10">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Horario</h4>
+                                <p class="text-zinc-400 text-xs mt-0.5">Lunes a Sábado: 07:00 AM - 11:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="apple-card rounded-3xl p-3 border border-white/15 relative overflow-hidden">
+                        <div class="w-full h-80 sm:h-96 rounded-2xl bg-zinc-900 relative flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                            
+                            <div class="relative z-10 text-center space-y-4 p-6 apple-glass rounded-2xl max-w-sm border border-white/20">
+                                <div class="w-10 h-10 bg-apple-accent/20 rounded-full flex items-center justify-center mx-auto text-apple-accent">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-base">Cafetería Bodrio Bar</h4>
+                                    <p class="text-xs text-zinc-400 mt-1">Culiacán, Sin.</p>
+                                </div>
+                                <button onclick="showToast('Ubicación copiada al portapapeles')" class="apple-pressable inline-block px-5 py-2.5 rounded-full bg-apple-accent text-black font-bold text-xs hover:bg-emerald-400 shadow-md">
+                                    Copiar Dirección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-white/10 text-zinc-400 text-xs py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-apple-accent"></span>
+                <span class="font-bold text-white">Cafetería Bodrio</span>
+                <span class="text-zinc-600">|</span>
+                <span class="text-zinc-500">WWDC Fluid Physics Guidelines</span>
+            </div>
+            <p class="text-zinc-500 text-center">&copy; 2026 Cafetería Bodrio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+
+    <!-- ========================================================================= -->
+    <!-- DRAGGABLE iOS BOTTOM SHEET CART DRAWER (INTERRUPTIBLE SPRING + RUBBER BAND) -->
+    <!-- ========================================================================= -->
+    <div id="cartSheetOverlay" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+        <!-- Backdrop Blur -->
+        <div id="cartBackdrop" onclick="closeCartSheet()" class="absolute inset-0 bg-black/70 backdrop-blur-md pointer-events-auto"></div>
+        
+        <!-- Draggable Bottom Sheet Modal -->
+        <div id="cartSheetModal" class="absolute bottom-0 left-0 right-0 max-w-xl mx-auto h-[85vh] apple-glass sheet-shadow rounded-t-[36px] flex flex-col justify-between overflow-hidden pointer-events-auto transform translate-y-full border-t border-white/20">
+            
+            <!-- Sheet Header / Drag Handle Handle Target -->
+            <div id="cartSheetDragHandle" class="w-full pt-4 pb-3 cursor-grab active:cursor-grabbing flex flex-col items-center select-none touch-none bg-zinc-900/40">
+                <div class="w-12 h-1.5 bg-white/30 rounded-full"></div>
+                <div class="flex items-center justify-between w-full px-6 pt-3">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-apple-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <h3 class="font-extrabold text-lg text-white tracking-apple-tight">Tu Pedido Bodrio</h3>
+                    </div>
+                    <button onclick="closeCartSheet()" class="apple-pressable p-1.5 rounded-full bg-white/10 text-zinc-400 hover:text-white">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cart Items Scrollable Content -->
+            <div id="cartSheetItemsList" class="flex-1 overflow-y-auto px-6 py-4 space-y-3">
+                <!-- JS Populated Items -->
+            </div>
+
+            <!-- Order Cost Breakdown & Action Footer -->
+            <div class="p-6 bg-zinc-950/90 border-t border-white/10 space-y-3">
+                <div class="flex justify-between items-center text-xs text-zinc-400">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotalText" class="text-white font-semibold">$0.00 MXN</span>
+                </div>
+                <div class="flex justify-between items-center text-xs text-zinc-400">
+                    <span>IVA (16%)</span>
+                    <span id="cartIvaText" class="text-white font-semibold">$0.00 MXN</span>
+                </div>
+                <div class="flex justify-between items-center text-xs text-zinc-400">
+                    <span>Vaso de Meme Ilustrado</span>
+                    <span class="text-apple-accent font-semibold uppercase">GRATIS</span>
+                </div>
+
+                <div class="flex justify-between items-center text-lg font-extrabold border-t border-white/10 pt-3 text-white">
+                    <span>Total Pedido</span>
+                    <span id="cartTotalText" class="text-apple-accent text-2xl tracking-apple-tight">$0.00 MXN</span>
+                </div>
+
+                <button onclick="processOrderCheckout()" class="apple-pressable w-full py-4 rounded-full bg-apple-accent text-black font-extrabold text-sm hover:bg-emerald-400 shadow-xl flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                    <span>Procesar Pedido</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT: SPRING ENGINE, RUBBER-BANDING & APP LOGIC -->
+    <!-- ========================================================================= -->
+    <script>
+        // -------------------------------------------------------------------------
+        // 1. DATA MODELS & INITIAL STATE
+        // -------------------------------------------------------------------------
+        const MENU_ITEMS = [
+            {
+                id: 1,
+                name: "Latte de Cheems",
+                category: "rancias",
+                price: 85,
+                badge: "Más Vendido",
+                description: "Espresso doble con leche cremosada. Vaso con diseño de Cheems triste.",
+                svgType: "cheems"
+            },
+            {
+                id: 2,
+                name: "Espresso Existencial",
+                category: "rancias",
+                price: 65,
+                badge: "Intenso",
+                description: "Extracción pura sin azúcar. Para sobrepensar tus decisiones de medianoche.",
+                svgType: "brain"
+            },
+            {
+                id: 3,
+                name: "Capuchino Brain-Rot",
+                category: "rancias",
+                price: 80,
+                badge: "Espumoso",
+                description: "Canela fina espolvoreada sobre crema densa con vaso de expansión mental.",
+                svgType: "brain"
+            },
+            {
+                id: 4,
+                name: "Té de Gato Llorando",
+                category: "rancias",
+                price: 75,
+                badge: "Relajante",
+                description: "Infusión herbal helada de manzanilla y limón para calmar la ansiedad laboral.",
+                svgType: "cat"
+            },
+            {
+                id: 5,
+                name: "Frapé Void",
+                category: "rancias",
+                price: 95,
+                badge: "Helado",
+                description: "Mezcla de café frío con jarabe de chocolate oscuro y galleta triturada.",
+                svgType: "drake"
+            },
+            {
+                id: 6,
+                name: "Combo Ansiolítico",
+                category: "combos",
+                price: 145,
+                badge: "Paquete",
+                description: "Latte de Cheems grande + Panqué de plátano recién horneado.",
+                svgType: "cheems"
+            },
+            {
+                id: 7,
+                name: "Combo Desvelo Pro",
+                category: "combos",
+                price: 160,
+                badge: "Paquete",
+                description: "Espresso Existencial doble + Cold Brew helado para aguantar la entrega.",
+                svgType: "brain"
+            },
+            {
+                id: 8,
+                name: "Bodrio Personalizado",
+                category: "custom",
+                price: 100,
+                badge: "Edición Libre",
+                description: "Elige tu bebida y manda a imprimir el texto que quieras en el vaso.",
+                svgType: "cat"
+            }
+        ];
+
+        const MEME_PRESETS = [
+            { id: "cheems", name: "Cheems Triste", top: "NO QUIERO TRABAJAR", bottom: "SOLO QUIERO MI CAFECITO" },
+            { id: "cat", name: "Gato Regañado", top: "CUANDO APENAS ES LUNES", bottom: "Y YA QUIERO RENUNCIAR" },
+            { id: "drake", name: "Drake Disapprove", top: "CAFÉ NORMAL DE CADENA", bottom: "BODRIO LATTE DANK" },
+            { id: "brain", name: "Cerebro Galáctico", top: "NIVEL DE CAFEÍNA", bottom: "OVER 9000" }
+        ];
+
+        let cartItems = [];
+        let activeAccentColor = "#30D158";
+        let activeMemePreset = MEME_PRESETS[0];
+
+        // -------------------------------------------------------------------------
+        // 2. INTERRUPTIBLE SPRING PHYSICS ENGINE (WWDC GUIDELINES)
+        // -------------------------------------------------------------------------
+        class SpringPhysics {
+            constructor({ response = 0.35, dampingRatio = 1.0 }) {
+                this.response = response;
+                this.dampingRatio = dampingRatio;
+                this.calculateConstants();
+            }
+
+            calculateConstants() {
+                // Derived spring stiffness (k) & damping (c) from response time & damping ratio
+                this.w0 = (2 * Math.PI) / this.response;
+                this.k = this.w0 * this.w0; // mass = 1
+                this.c = 2 * this.dampingRatio * this.w0;
+            }
+
+            // Step dynamic spring frame with velocity tracking
+            step(currentPos, currentVel, targetPos, dt) {
+                const displacement = currentPos - targetPos;
+                const springForce = -this.k * displacement;
+                const dampingForce = -this.c * currentVel;
+                const accel = springForce + dampingForce; // mass = 1
+
+                const newVel = currentVel + accel * dt;
+                const newPos = currentPos + newVel * dt;
+
+                return { pos: newPos, vel: newVel };
+            }
+        }
+
+        const uiSpring = new SpringPhysics({ response: 0.35, dampingRatio: 1.0 });
+
+        // -------------------------------------------------------------------------
+        // 3. RUBBER-BANDING & MOMENTUM PROJECTION (APPLE FORMULAS)
+        // -------------------------------------------------------------------------
+        // Apple Rubber-Banding Resistance: f(x) = (x * c * d) / (d + c * |x|)
+        function applyRubberBanding(offset, dimension, constant = 0.55) {
+            const absOffset = Math.abs(offset);
+            const resisted = (absOffset * constant * dimension) / (dimension + constant * absOffset);
+            return Math.sign(offset) * resisted;
+        }
+
+        // Apple Momentum Projection: project(v) = (v / 1000) * 0.998 / (1 - 0.998)
+        function projectMomentum(velocity) {
+            // velocity in px/s
+            return (velocity / 1000) * (0.998 / (1 - 0.998));
+        }
+
+        // -------------------------------------------------------------------------
+        // 4. DRAGGABLE BOTTOM SHEET MODAL WITH FLUID MOTION
+        // -------------------------------------------------------------------------
+        const cartSheetOverlay = document.getElementById('cartSheetOverlay');
+        const cartSheetModal = document.getElementById('cartSheetModal');
+        const dragHandle = document.getElementById('cartSheetDragHandle');
+
+        let isSheetOpen = false;
+        let sheetCurrentY = 1000; // pixels down
+        let sheetTargetY = 1000;
+        let sheetVelocityY = 0;
+        let isDraggingSheet = false;
+        let dragStartY = 0;
+        let dragStartSheetY = 0;
+        let lastPointerY = 0;
+        let lastPointerTime = 0;
+        let animationFrameId = null;
+
+        function openCartSheet() {
+            isSheetOpen = true;
+            cartSheetOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            sheetTargetY = 0; // Fully expanded up
+            startSpringLoop();
+        }
+
+        function closeCartSheet() {
+            isSheetOpen = false;
+            sheetTargetY = cartSheetModal.offsetHeight || 600;
+            startSpringLoop();
+            setTimeout(() => {
+                if (!isSheetOpen) {
+                    cartSheetOverlay.classList.add('opacity-0', 'pointer-events-none');
+                }
+            }, 350);
+        }
+
+        // Pointer Drag Listeners for Sheet Manipulation
+        dragHandle.addEventListener('pointerdown', (e) => {
+            isDraggingSheet = true;
+            dragHandle.setPointerCapture(e.pointerId);
+            dragStartY = e.clientY;
+            dragStartSheetY = sheetCurrentY;
+            lastPointerY = e.clientY;
+            lastPointerTime = performance.now();
+            sheetVelocityY = 0;
+            startSpringLoop();
+        });
+
+        dragHandle.addEventListener('pointermove', (e) => {
+            if (!isDraggingSheet) return;
+            const now = performance.now();
+            const dt = (now - lastPointerTime) / 1000;
+            if (dt > 0) {
+                sheetVelocityY = (e.clientY - lastPointerY) / dt;
+            }
+            lastPointerY = e.clientY;
+            lastPointerTime = now;
+
+            const deltaY = e.clientY - dragStartY;
+            let rawY = dragStartSheetY + deltaY;
+
+            // Apply rubber-banding if dragging past upper boundary (Y < 0)
+            if (rawY < 0) {
+                rawY = applyRubberBanding(rawY, window.innerHeight);
+            }
+
+            sheetCurrentY = rawY;
+            cartSheetModal.style.transform = `translateY(${sheetCurrentY}px)`;
+        });
+
+        dragHandle.addEventListener('pointerup', (e) => {
+            if (!isDraggingSheet) return;
+            isDraggingSheet = false;
+            dragHandle.releasePointerCapture(e.pointerId);
+
+            // Project momentum to find snap target
+            const projectedY = sheetCurrentY + projectMomentum(sheetVelocityY);
+            const sheetHeight = cartSheetModal.offsetHeight || 500;
+
+            if (projectedY > sheetHeight * 0.4 || sheetVelocityY > 600) {
+                closeCartSheet();
+            } else {
+                sheetTargetY = 0;
+                startSpringLoop();
+            }
+        });
+
+        function startSpringLoop() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            let lastTime = performance.now();
+
+            function frame(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.032);
+                lastTime = now;
+
+                if (!isDraggingSheet) {
+                    const result = uiSpring.step(sheetCurrentY, sheetVelocityY, sheetTargetY, dt);
+                    sheetCurrentY = result.pos;
+                    sheetVelocityY = result.vel;
+                    cartSheetModal.style.transform = `translateY(${sheetCurrentY}px)`;
+
+                    // Stop loop when settled
+                    if (Math.abs(sheetCurrentY - sheetTargetY) < 0.1 && Math.abs(sheetVelocityY) < 0.1) {
+                        sheetCurrentY = sheetTargetY;
+                        cartSheetModal.style.transform = `translateY(${sheetCurrentY}px)`;
+                        return;
+                    }
+                }
+                animationFrameId = requestAnimationFrame(frame);
+            }
+            animationFrameId = requestAnimationFrame(frame);
+        }
+
+        // -------------------------------------------------------------------------
+        // 5. iOS SEGMENTED CONTROL SPRING SLIDER
+        // -------------------------------------------------------------------------
+        let pillCurrentX = 4;
+        let pillTargetX = 4;
+        let pillVelocityX = 0;
+        let pillAnimFrame = null;
+
+        function setSegment(index, category) {
+            const tabs = document.querySelectorAll('.segment-tab');
+            const container = document.getElementById('segmentedBar');
+            const pill = document.getElementById('segmentedPill');
+
+            tabs.forEach((tab, i) => {
+                if (i === index) {
+                    tab.classList.remove('text-zinc-400');
+                    tab.classList.add('text-white');
+                } else {
+                    tab.classList.remove('text-white');
+                    tab.classList.add('text-zinc-400');
+                }
+            });
+
+            const tabWidth = (container.offsetWidth - 8) / 4;
+            pillTargetX = 4 + index * tabWidth;
+            pill.style.width = `${tabWidth}px`;
+
+            // Animate pill with physics
+            if (pillAnimFrame) cancelAnimationFrame(pillAnimFrame);
+            let lastT = performance.now();
+
+            function animatePill(now) {
+                const dt = Math.min((now - lastT) / 1000, 0.032);
+                lastT = now;
+
+                const res = uiSpring.step(pillCurrentX, pillVelocityX, pillTargetX, dt);
+                pillCurrentX = res.pos;
+                pillVelocityX = res.vel;
+                pill.style.transform = `translateX(${pillCurrentX - 4}px)`;
+
+                if (Math.abs(pillCurrentX - pillTargetX) > 0.1 || Math.abs(pillVelocityX) > 0.1) {
+                    pillAnimFrame = requestAnimationFrame(animatePill);
+                } else {
+                    pillCurrentX = pillTargetX;
+                    pill.style.transform = `translateX(${pillCurrentX - 4}px)`;
+                }
+            }
+            pillAnimFrame = requestAnimationFrame(animatePill);
+
+            renderMenuGrid(category);
+        }
+
+        // -------------------------------------------------------------------------
+        // 6. RENDER MENU CARDS GRID
+        // -------------------------------------------------------------------------
+        function renderMenuGrid(category) {
+            const container = document.getElementById('menuCardsGrid');
+            container.innerHTML = '';
+
+            const items = category === 'todos' 
+                ? MENU_ITEMS 
+                : MENU_ITEMS.filter(item => item.category === category);
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "apple-card rounded-3xl p-6 flex flex-col justify-between space-y-4 border border-white/10";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-full bg-white/10 text-apple-accent text-[10px] font-bold border border-white/10 tracking-wide">${item.badge}</span>
+                            <span class="text-lg font-extrabold text-white tracking-apple-tight">$${item.price} MXN</span>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-white tracking-apple-tight">${item.name}</h4>
+                        <p class="text-zinc-400 text-xs leading-relaxed tracking-apple-subhead">${item.description}</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+                        <span class="text-[11px] text-zinc-500 font-semibold">Incluye Vaso Antideslizante</span>
+                        <button onclick="addToCart(${item.id})" class="apple-pressable px-4 py-2.5 rounded-full bg-white/10 text-white hover:bg-apple-accent hover:text-black font-bold text-xs transition-colors flex items-center gap-1.5 border border-white/15 shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                            <span>Agregar</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // -------------------------------------------------------------------------
+        // 7. MEME CUP SVG CUSTOMIZER ENGINE
+        // -------------------------------------------------------------------------
+        function initMemeTemplates() {
+            const container = document.getElementById('memeTemplatesContainer');
+            container.innerHTML = '';
+
+            MEME_PRESETS.forEach((preset, index) => {
+                const btn = document.createElement('button');
+                btn.className = `apple-pressable p-3 rounded-2xl border text-left text-xs transition-all ${index === 0 ? 'border-apple-accent bg-apple-accent/15 text-white' : 'border-white/10 bg-white/5 text-zinc-400 hover:text-white'}`;
+                btn.onclick = () => selectMemePreset(preset, btn);
+                btn.innerHTML = `
+                    <span class="block font-bold text-white text-[11px]">${preset.name}</span>
+                    <span class="text-[9px] text-zinc-500 block truncate mt-0.5">${preset.top}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectMemePreset(preset, btnElement) {
+            activeMemePreset = preset;
+            document.querySelectorAll('#memeTemplatesContainer button').forEach(b => {
+                b.className = "apple-pressable p-3 rounded-2xl border border-white/10 bg-white/5 text-zinc-400 hover:text-white text-left text-xs transition-all";
+            });
+            btnElement.className = "apple-pressable p-3 rounded-2xl border border-apple-accent bg-apple-accent/15 text-white text-left text-xs transition-all";
+
+            document.getElementById('inputTopText').value = preset.top;
+            document.getElementById('inputBottomText').value = preset.bottom;
+            updateCustomCupSVG();
+        }
+
+        function setCupAccent(colorHex) {
+            activeAccentColor = colorHex;
+            updateCustomCupSVG();
+        }
+
+        function updateCustomCupSVG() {
+            const select = document.getElementById('customBaseDrinkSelect');
+            const price = select.value;
+            const drinkName = select.options[select.selectedIndex].getAttribute('data-name');
+            
+            const topText = (document.getElementById('inputTopText').value || "TEXTO SUPERIOR").toUpperCase();
+            const bottomText = (document.getElementById('inputBottomText').value || "TEXTO INFERIOR").toUpperCase();
+
+            document.getElementById('previewDrinkLabel').innerText = drinkName;
+            document.getElementById('customCupPriceTag').innerText = `$${price} MXN`;
+            document.getElementById('svgTopTextElement').textContent = topText;
+            document.getElementById('svgBottomTextElement').textContent = bottomText;
+
+            // Apply SVG Colors
+            document.getElementById('svgCupBorderPath').setAttribute('stroke', activeAccentColor);
+            document.getElementById('svgFrameBorder').setAttribute('stroke', activeAccentColor);
+            document.getElementById('svgTopTextElement').setAttribute('fill', activeAccentColor);
+
+            // Render Vector Meme Paths
+            const graphicSlot = document.getElementById('svgMemeGraphicSlot');
+            let svgPaths = '';
+
+            switch(activeMemePreset.id) {
+                case 'cheems':
+                    svgPaths = `
+                        <ellipse cx="18" cy="18" rx="13" ry="11" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                        <path d="M 8 10 L 3 3 L 13 8 Z M 28 10 L 33 3 L 23 8 Z" fill="${activeAccentColor}"/>
+                        <circle cx="13" cy="15" r="1.5" fill="${activeAccentColor}"/>
+                        <circle cx="23" cy="15" r="1.5" fill="${activeAccentColor}"/>
+                        <path d="M 14 23 Q 18 19 22 23" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                    `;
+                    break;
+                case 'cat':
+                    svgPaths = `
+                        <path d="M 6 26 L 14 8 L 22 26 Z M 24 26 L 32 8 L 40 26 Z" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                        <circle cx="16" cy="20" r="2" fill="${activeAccentColor}"/>
+                        <circle cx="30" cy="20" r="2" fill="${activeAccentColor}"/>
+                        <ellipse cx="23" cy="28" rx="6" ry="4" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                    `;
+                    break;
+                case 'drake':
+                    svgPaths = `
+                        <circle cx="18" cy="12" r="7" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                        <path d="M 8 28 L 18 20 L 28 28" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                        <path d="M 28 16 L 34 10" stroke="${activeAccentColor}" stroke-width="2" stroke-linecap="round"/>
+                    `;
+                    break;
+                case 'brain':
+                    svgPaths = `
+                        <path d="M 10 25 C 5 15, 15 5, 23 10 C 28 5, 38 15, 33 25 C 38 30, 25 38, 10 25 Z" fill="none" stroke="${activeAccentColor}" stroke-width="1.5"/>
+                        <path d="M 15 18 L 28 18 M 20 12 L 20 24" stroke="${activeAccentColor}" stroke-width="1.2"/>
+                    `;
+                    break;
+            }
+
+            graphicSlot.innerHTML = svgPaths;
+        }
+
+        function addCustomCupToCart() {
+            const select = document.getElementById('customBaseDrinkSelect');
+            const price = parseInt(select.value);
+            const drinkName = select.options[select.selectedIndex].getAttribute('data-name');
+            const topText = document.getElementById('inputTopText').value || "Vaso Personalizado";
+
+            const cartItem = {
+                id: Date.now(),
+                name: `${drinkName} (Diseño Custom)`,
+                price: price,
+                details: `Vaso: "${topText}"`,
+                qty: 1
+            };
+
+            cartItems.push(cartItem);
+            updateCartState();
+            openCartSheet();
+            showToast("Vaso personalizado agregado al carrito");
+        }
+
+        // -------------------------------------------------------------------------
+        // 8. CART MANAGEMENT & CHECKOUT
+        // -------------------------------------------------------------------------
+        function addToCart(itemId) {
+            const item = MENU_ITEMS.find(m => m.id === itemId);
+            const existing = cartItems.find(c => c.id === itemId);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cartItems.push({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    details: "Vaso Coleccionable Incluido",
+                    qty: 1
+                });
+            }
+
+            updateCartState();
+            showToast(`Agregado: ${item.name}`);
+        }
+
+        function updateQuantity(id, delta) {
+            const item = cartItems.find(c => c.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cartItems = cartItems.filter(c => c.id !== id);
+            }
+            updateCartState();
+        }
+
+        function updateCartState() {
+            const badge = document.getElementById('cartBadge');
+            const list = document.getElementById('cartSheetItemsList');
+
+            const totalCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+            badge.innerText = totalCount;
+
+            if (totalCount > 0) {
+                badge.classList.remove('scale-0');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            list.innerHTML = '';
+            let subtotal = 0;
+
+            if (cartItems.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-16 space-y-3">
+                        <svg class="w-12 h-12 text-zinc-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <p class="text-zinc-500 text-sm font-medium">Tu carrito está completamente vacío.</p>
+                    </div>
+                `;
+            } else {
+                cartItems.forEach(item => {
+                    const lineTotal = item.price * item.qty;
+                    subtotal += lineTotal;
+
+                    const row = document.createElement('div');
+                    row.className = "apple-card p-4 rounded-2xl flex items-center justify-between border border-white/10";
+                    row.innerHTML = `
+                        <div class="space-y-0.5">
+                            <h5 class="text-sm font-extrabold text-white">${item.name}</h5>
+                            <span class="text-xs text-zinc-400 block">${item.details}</span>
+                            <span class="text-xs font-bold text-apple-accent">$${item.price} MXN c/u</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 bg-white/10 rounded-full px-2 py-1 border border-white/15">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="apple-pressable text-white hover:text-red-400 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">-</button>
+                                <span class="text-xs font-extrabold text-white w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="apple-pressable text-white hover:text-apple-accent w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">+</button>
+                            </div>
+                            <span class="text-sm font-extrabold text-white min-w-[65px] text-right">$${lineTotal}</span>
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+
+            const iva = subtotal * 0.16;
+            const total = subtotal + iva;
+
+            document.getElementById('cartSubtotalText').innerText = `$${subtotal.toFixed(2)} MXN`;
+            document.getElementById('cartIvaText').innerText = `$${iva.toFixed(2)} MXN`;
+            document.getElementById('cartTotalText').innerText = `$${total.toFixed(2)} MXN`;
+        }
+
+        function processOrderCheckout() {
+            if (cartItems.length === 0) {
+                showToast("Agrega un brebaje antes de procesar.");
+                return;
+            }
+
+            cartItems = [];
+            updateCartState();
+            closeCartSheet();
+            showToast("¡Pedido recibido! Preparando tu vaso meme...");
+        }
+
+        // -------------------------------------------------------------------------
+        // 9. iOS TOAST NOTIFICATION CAPSULE
+        // -------------------------------------------------------------------------
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = "apple-glass px-5 py-3 rounded-full text-white text-xs font-bold shadow-2xl pointer-events-auto flex items-center gap-2.5 transform translate-y-8 opacity-0 transition-all duration-300 border border-white/20";
+            toast.innerHTML = `
+                <span class="w-2.5 h-2.5 rounded-full bg-apple-accent shadow-[0_0_8px_#30D158]"></span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-8', 'opacity-0');
+            }, 20);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+
+        // -------------------------------------------------------------------------
+        // 10. INITIALIZATION
+        // -------------------------------------------------------------------------
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenuGrid('todos');
+            initMemeTemplates();
+            updateCustomCupSVG();
+
+            document.getElementById('cartTriggerBtn').addEventListener('click', openCartSheet);
+        });
+    </script>
+</body>
+</html>
