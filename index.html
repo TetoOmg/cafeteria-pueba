@@ -1,200 +1,297 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafetería Bodrio</title>
-    <!-- Tailwind CSS vía CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Animaciones CSS puras */
-        .animacion-aparicion {
-            animation: aparecer 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        .retraso-1 { animation-delay: 0.2s; }
-        .retraso-2 { animation-delay: 0.4s; }
-        
-        @keyframes aparecer {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cafecito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#120b08;--card:#1e130d;--line:#3a2519;--cream:#f4e6d3;--mut:#b09a84;--a:#ff8a3d;--b:#ff4f7b;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font:400 16px/1.55 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3,.logo{font-family:Fraunces,Georgia,serif}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--a);outline-offset:3px}
+.orb{position:fixed;width:55vmax;height:55vmax;border-radius:50%;filter:blur(100px);opacity:.22;z-index:-1;animation:drift 22s ease-in-out infinite alternate}
+.o1{background:#ff7a18;top:-20vmax;left:-15vmax}.o2{background:#b3124f;bottom:-25vmax;right:-15vmax;animation-delay:-9s}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.2)}}
+#liquid{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60;filter:url(#goo);mix-blend-mode:screen;opacity:.7}
+header{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 5vw;background:#120b08cc;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.logo{font-size:1.5rem;font-weight:900}
+nav{display:flex;gap:22px;align-items:center}
+nav a{color:var(--mut);text-decoration:none}nav a:hover{color:var(--cream)}
+.btn{border:0;cursor:pointer;border-radius:999px;padding:11px 22px;font-weight:600;color:#1a0d05;background:linear-gradient(110deg,var(--a),var(--b),var(--a));background-size:220% 100%;transition:background-position .6s,transform .2s}
+.btn:hover{background-position:100% 0;transform:translateY(-2px)}
+.btn.ghost{background:none;color:var(--cream);border:1px solid var(--line)}
+#cartBtn{position:relative}
+#count{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;border-radius:11px;background:var(--cream);color:#1a0d05;font-size:.8rem;display:grid;place-items:center}
+#count.bump{animation:pop .45s}
+section{padding:80px 5vw;max-width:1180px;margin:auto}
+.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center}
+h1{font-size:clamp(3rem,10vw,8rem);line-height:.95;font-weight:900;letter-spacing:-.03em}
+h1 span{display:inline-block;opacity:0;transform:translateY(60%) rotate(6deg);animation:rise .8s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero p{max-width:34ch;margin:28px 0;color:var(--mut);font-size:1.2rem}
+h2{font-size:clamp(2rem,5vw,3.2rem);margin-bottom:34px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.card{--mx:50%;--my:50%;position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;transition:transform .2s ease-out,border-color .3s;transform-style:preserve-3d;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx) var(--my),#ff8a3d30,transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{border-color:#6b3f27}.card:hover::before{opacity:1}
+.emoji{font-size:3.4rem;display:inline-block;transition:transform .4s}
+.card:hover .emoji{transform:scale(1.2) rotate(-10deg)}
+.card h3{font-size:1.4rem;margin:10px 0 4px}
+.card p{color:var(--mut);min-height:3.1em}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px}
+.price{font-size:1.25rem;font-weight:600}
+.stars{display:flex;gap:2px;margin-top:14px}
+.star{background:none;border:0;font-size:1.7rem;line-height:1;color:#4b392c;cursor:pointer;transition:color .15s,transform .15s}
+.star.on{color:#ffc83d;text-shadow:0 0 14px #ffc83d88}
+.star:hover{transform:scale(1.3) rotate(-10deg)}
+.star.pop{animation:pop .55s}
+@keyframes pop{40%{transform:scale(1.8) rotate(25deg)}100%{transform:none}}
+.mine{font-size:.85rem;color:var(--mut);margin-top:2px;min-height:1.3em}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
+#drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--card);border-left:1px solid var(--line);z-index:70;padding:26px;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#drawer.open{transform:none}
+#items{flex:1;overflow:auto;margin:18px 0}
+.it{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:8px}
+.q{display:flex;align-items:center;gap:8px}.q button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer}
+.empty{color:var(--mut)}
+.total{display:flex;justify-content:space-between;font-size:1.3rem;margin-bottom:14px}
+form{display:grid;gap:12px;max-width:560px}
+input,textarea{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 16px;width:100%}
+textarea{min-height:110px;resize:vertical}
+.cm{border-left:3px solid var(--a);padding:6px 0 6px 16px;margin:18px 0;animation:rise .6s both}
+.cm small{color:var(--mut)}
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--cream);color:#1a0d05;padding:12px 22px;border-radius:999px;z-index:80;transition:transform .4s;font-weight:600}
+#toast.show{transform:translate(-50%,0)}
+footer{text-align:center;color:var(--mut);padding:50px 5vw 70px}
+@media(max-width:600px){nav a{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}#liquid{display:none}}
+</style>
 </head>
-<body class="bg-stone-100 text-stone-800 font-sans min-h-screen">
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="goo"><feGaussianBlur stdDeviation="5"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10"/></filter></svg>
+<canvas id="liquid" aria-hidden="true"></canvas>
+<div class="orb o1"></div><div class="orb o2"></div>
 
-    <!-- Encabezado -->
-    <header class="bg-stone-900 text-stone-100 p-12 text-center animacion-aparicion">
-        <h1 class="text-5xl font-light tracking-widest uppercase mb-4">Cafetería Bodrio</h1>
-        <p class="text-stone-400 font-light tracking-wide">La pureza del grano en cada taza.</p>
-    </header>
+<header>
+  <span class="logo">Cafecito</span>
+  <nav><a href="#menu">Menú</a><a href="#comentarios">Comentarios</a>
+  <button class="btn" id="cartBtn" aria-label="Abrir carrito">Carrito<span id="count">0</span></button></nav>
+</header>
 
-    <!-- Acerca de Nosotros -->
-    <section class="max-w-4xl mx-auto py-16 px-6 text-center animacion-aparicion retraso-1">
-        <h2 class="text-3xl font-light text-stone-700 mb-6">Acerca de Nosotros</h2>
-        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=1000" alt="Interior de la cafetería" class="w-full h-64 object-cover rounded-none mb-6 grayscale opacity-90 border border-stone-300">
-        <p class="text-stone-600 leading-relaxed">
-            Fundada con la convicción de que el café no es una simple bebida, sino una experiencia sensorial. 
-            En Bodrio, tostamos nuestros propios granos y diseñamos espacios minimalistas para que nada 
-            interfiera entre tú y tu café.
-        </p>
-    </section>
+<main>
+<section class="hero">
+  <h1 id="title">Café con carácter</h1>
+  <p>Mueve el mouse, deja tu estrella y arma tu pedido.</p>
+  <div><a href="#menu" class="btn" style="text-decoration:none;display:inline-block">Ver el menú</a></div>
+</section>
 
-    <!-- Personalización Global -->
-    <section class="bg-stone-200 py-16 px-6 animacion-aparicion retraso-2">
-        <div class="max-w-3xl mx-auto bg-stone-100 p-8 border border-stone-300 shadow-sm">
-            <h2 class="text-2xl font-light text-stone-700 mb-6">Personaliza tu Pedido</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-2">
-                <div>
-                    <label class="block text-stone-600 text-sm mb-2">Tamaño</label>
-                    <select id="opcion-tamano" class="w-full p-2 bg-transparent border-b border-stone-400 focus:outline-none focus:border-stone-800">
-                        <option>Chico</option>
-                        <option selected>Mediano</option>
-                        <option>Grande</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-stone-600 text-sm mb-2">Leche</label>
-                    <select id="opcion-leche" class="w-full p-2 bg-transparent border-b border-stone-400 focus:outline-none focus:border-stone-800">
-                        <option selected>Entera</option>
-                        <option>Deslactosada</option>
-                        <option>Avena</option>
-                        <option>Almendra</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-stone-600 text-sm mb-2">Extras</label>
-                    <select id="opcion-extra" class="w-full p-2 bg-transparent border-b border-stone-400 focus:outline-none focus:border-stone-800">
-                        <option selected>Ninguno</option>
-                        <option>Shot extra de espresso</option>
-                        <option>Sirope de vainilla</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="menu">
+  <h2 class="rv">Lo que hay hoy</h2>
+  <div class="grid" id="grid"></div>
+</section>
 
-    <!-- Menú de Productos -->
-    <section class="max-w-6xl mx-auto py-16 px-6">
-        <h2 class="text-3xl font-light text-stone-700 mb-10 text-center">Nuestro Menú</h2>
-        <div id="contenedor-menu" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Los productos se inyectan aquí vía JavaScript -->
-        </div>
-    </section>
+<section id="comentarios">
+  <h2 class="rv">Cuéntanos qué tal</h2>
+  <form id="cform">
+    <input id="cname" placeholder="Tu nombre" maxlength="40" required>
+    <textarea id="ctext" placeholder="Escribe tu comentario" maxlength="400" required></textarea>
+    <button class="btn" type="submit" style="justify-self:start">Publicar comentario</button>
+  </form>
+  <div id="clist"></div>
+</section>
+</main>
+<footer>Hecho con café y cariño.</footer>
 
-    <!-- Reseñas -->
-    <section class="max-w-4xl mx-auto py-16 px-6">
-        <h2 class="text-3xl font-light text-stone-700 mb-8 text-center">Evaluación y Reseñas</h2>
-        <form id="formulario-resena" class="bg-stone-200 p-8 border border-stone-300 shadow-sm">
-            <div class="mb-6">
-                <label class="block text-stone-700 mb-2">Califica tu experiencia (1-5)</label>
-                <input type="number" id="input-calificacion" min="1" max="5" value="5" class="w-full p-2 bg-stone-100 border border-stone-400 focus:outline-none focus:border-stone-800">
-            </div>
-            <div class="mb-6">
-                <label class="block text-stone-700 mb-2">Déjanos tu comentario</label>
-                <textarea id="input-comentario" class="w-full p-2 bg-stone-100 border border-stone-400 focus:outline-none focus:border-stone-800 h-24 resize-none" placeholder="¿Qué te pareció nuestro café?"></textarea>
-            </div>
-            <button type="submit" class="bg-stone-800 text-stone-100 px-6 py-2 hover:bg-stone-700 transition-colors">
-                Publicar Reseña
-            </button>
-        </form>
-    </section>
+<aside id="drawer" aria-label="Carrito">
+  <div class="row" style="margin:0"><h2 style="margin:0;font-size:1.8rem">Tu carrito</h2><button class="btn ghost" id="closeCart">Cerrar</button></div>
+  <div id="items"></div>
+  <div class="total"><span>Total</span><strong id="total">$0</strong></div>
+  <button class="btn" id="checkout">Hacer pedido</button>
+</aside>
+<div id="toast" role="status"></div>
 
-    <!-- Ubicación -->
-    <section class="bg-stone-900 text-stone-400 py-16 px-6 text-center">
-        <h2 class="text-2xl font-light text-stone-100 mb-6">Ubicación</h2>
-        <p class="mb-2">Avenida de los Insurgentes Sur 123, Culiacán, Sinaloa.</p>
-        <p class="mb-6">Abierto de Lunes a Sábado | 07:00 AM - 09:00 PM</p>
-        <div class="w-full max-w-2xl mx-auto h-64 bg-stone-800 border border-stone-700 flex items-center justify-center">
-            <span class="text-sm tracking-widest uppercase">Marcador de mapa (Reemplazar con iframe de Google Maps)</span>
-        </div>
-    </section>
+<script>
+/* ========= CONFIGURACIÓN ========= */
+const API_URL = "https://cafeteria-pueba.onrender.com"; // URL de tu backend en Render (sin "/" al final)
 
-    <!-- Lógica JavaScript Vanilla -->
-    <script>
-        // 1. Base de datos estática de productos
-        const productos = [
-            { id: 1, nombre: "Espresso Intenso", precio: 45, descripcion: "Extracción pura y concentrada." },
-            { id: 2, nombre: "Latte Macchiato", precio: 65, descripcion: "Leche vaporizada con un toque de espresso." },
-            { id: 3, nombre: "Cold Brew Bodrio", precio: 75, descripcion: "Maceración en frío por 24 horas." },
-            { id: 4, nombre: "Flat White", precio: 60, descripcion: "Microespuma sedosa y doble carga." },
-            { id: 5, nombre: "Mocha Oscuro", precio: 80, descripcion: "Cacao al 70% integrado con espresso." },
-            { id: 6, nombre: "Americano de Especialidad", precio: 50, descripcion: "Grano lavado de estricta altura." }
-        ];
+/* ========= DATOS ========= */
+const PRODUCTS = [
+  {id:1,name:"Lachamate Bodrio ZZZ",emoji:"🍵",price:65,desc:"Para cuando necesitas despertar o dormir, tú decides."},
+  {id:2,name:"Cafecito con leche de mi tío Álvaro",emoji:"🥛",price:55,desc:"Receta familiar. No preguntes por la leche."},
+  {id:3,name:"Chocolate caliente tipo Perú York",emoji:"🍫",price:60,desc:"Espeso, humeante y con mucha personalidad."},
+  {id:4,name:"Extra Willy Miados",emoji:"☕",price:75,desc:"Doble carga. Úsalo bajo tu propia responsabilidad."},
+  {id:5,name:"Cafecito normalito",emoji:"🫖",price:35,desc:"Sin drama. Siempre cumple."}
+];
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = s => document.querySelector(s);
+const money = n => "$" + n.toFixed(0);
+const ls = {get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 
-        // 2. Renderizado dinámico del menú
-        const contenedorMenu = document.getElementById('contenedor-menu');
-        
-        productos.forEach(producto => {
-            const tarjeta = document.createElement('div');
-            tarjeta.className = "bg-stone-100 p-6 border border-stone-300 hover:border-stone-500 transition-colors animacion-aparicion";
-            
-            tarjeta.innerHTML = `
-                <h3 class="text-xl text-stone-900 mb-2">${producto.nombre}</h3>
-                <p class="text-stone-600 mb-4 h-12">${producto.descripcion}</p>
-                <p class="text-lg font-medium text-stone-900 mb-4">$${producto.precio} MXN</p>
-                <button onclick="agregarAlPedido(${producto.id}, '${producto.nombre}', ${producto.precio})" class="w-full bg-stone-800 text-stone-100 py-2 hover:bg-stone-700 transition-colors">
-                    Agregar al pedido
-                </button>
-            `;
-            contenedorMenu.appendChild(tarjeta);
-        });
+/* ========= API (Render) ========= */
+const apiOn = () => !API_URL.includes("TU-BACKEND");
+async function api(path, body){
+  if(!apiOn()) throw new Error("sin backend");
+  const ctl = new AbortController(), t = setTimeout(()=>ctl.abort(), 45000); // Render gratis tarda en despertar
+  try{
+    const r = await fetch(API_URL+path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,signal:ctl.signal});
+    if(!r.ok) throw new Error(r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),2800)}
 
-        // 3. Lógica conectada al backend en Render
-        async function agregarAlPedido(id, nombre, precio) {
-            const tamano = document.getElementById('opcion-tamano').value;
-            const leche = document.getElementById('opcion-leche').value;
-            const extra = document.getElementById('opcion-extra').value;
+/* ========= TÍTULO POR LETRAS ========= */
+const title=$("#title"),txt=title.textContent;title.textContent="";title.setAttribute("aria-label",txt);
+[...txt].forEach((c,i)=>{const s=document.createElement("span");s.textContent=c===" "?"\u00a0":c;s.style.animationDelay=(.2+i*.045)+"s";s.setAttribute("aria-hidden","true");title.append(s)});
 
-            const orden = {
-                cliente: "Sebastián (Web)",
-                total: precio,
-                articulos: `1x ${nombre} (${tamano}, Leche: ${leche}, Extra: ${extra})`
-            };
+/* ========= PRODUCTOS + ESTRELLAS ========= */
+let ratings = ls.get("ratings",{});
+function paint(box,n){[...box.children].forEach((s,i)=>s.classList.toggle("on",i<n))}
+function burst(el){
+  if(RM) return;
+  const r=el.getBoundingClientRect();
+  for(let i=0;i<12;i++){
+    const s=document.createElement("span");s.textContent="★";
+    s.style.cssText=`position:fixed;left:${r.left+r.width/2}px;top:${r.top+r.height/2}px;color:#ffc83d;font-size:${8+Math.random()*12}px;pointer-events:none;z-index:99`;
+    document.body.append(s);
+    const a=Math.random()*6.28,d=34+Math.random()*60;
+    s.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(0) rotate(200deg)`,opacity:0}],{duration:750,easing:"ease-out"}).onfinish=()=>s.remove();
+  }
+}
+const grid=$("#grid");
+PRODUCTS.forEach(p=>{
+  const c=document.createElement("article");c.className="card rv";
+  c.innerHTML=`<span class="emoji"></span><h3></h3><p></p><div class="stars" role="group"></div><div class="mine"></div><div class="row"><span class="price"></span><button class="btn add">Agregar</button></div>`;
+  c.querySelector(".emoji").textContent=p.emoji;
+  c.querySelector("h3").textContent=p.name;
+  c.querySelector("p").textContent=p.desc;
+  c.querySelector(".price").textContent=money(p.price);
+  const box=c.querySelector(".stars"),mine=c.querySelector(".mine");
+  box.setAttribute("aria-label","Calificar "+p.name);
+  const label=()=>{mine.textContent=ratings[p.id]?`Tu calificación: ${ratings[p.id]}/5`:"Sin calificar"};
+  for(let i=1;i<=5;i++){
+    const s=document.createElement("button");s.className="star";s.type="button";s.textContent="★";s.setAttribute("aria-label",i+" estrellas");
+    s.onmouseenter=()=>paint(box,i);
+    s.onclick=()=>{
+      ratings[p.id]=i;ls.set("ratings",ratings);paint(box,i);label();
+      s.classList.remove("pop");void s.offsetWidth;s.classList.add("pop");burst(s);
+      api("/ratings",{product_id:p.id,product:p.name,stars:i}).catch(()=>{});
+    };
+    box.append(s);
+  }
+  box.onmouseleave=()=>paint(box,ratings[p.id]||0);
+  paint(box,ratings[p.id]||0);label();
+  c.querySelector(".add").onclick=()=>addToCart(p.id);
+  /* spotlight + tilt */
+  if(!RM) c.addEventListener("pointermove",e=>{
+    const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    c.style.setProperty("--mx",x+"px");c.style.setProperty("--my",y+"px");
+    c.style.transform=`perspective(800px) rotateY(${(x/r.width-.5)*8}deg) rotateX(${-(y/r.height-.5)*8}deg)`;
+  });
+  c.addEventListener("pointerleave",()=>c.style.transform="");
+  grid.append(c);
+});
 
-            console.log("Enviando orden al servidor...", orden);
+/* ========= CARRITO ========= */
+let cart = ls.get("cart",{});
+const drawer=$("#drawer");
+function addToCart(id){cart[id]=(cart[id]||0)+1;saveCart();toast("Agregado al carrito")}
+function saveCart(){ls.set("cart",cart);renderCart()}
+function renderCart(){
+  const items=$("#items");items.textContent="";
+  let total=0,n=0;
+  const ids=Object.keys(cart).filter(k=>cart[k]>0);
+  if(!ids.length){const e=document.createElement("p");e.className="empty";e.textContent="Aún no agregas nada. Elige algo del menú.";items.append(e)}
+  ids.forEach(id=>{
+    const p=PRODUCTS.find(x=>x.id==id);if(!p)return;
+    total+=p.price*cart[id];n+=cart[id];
+    const d=document.createElement("div");d.className="it";
+    d.innerHTML=`<span></span><span class="q"><button aria-label="Quitar uno">−</button><b></b><button aria-label="Agregar uno">+</button></span><strong></strong>`;
+    d.children[0].textContent=p.name;
+    d.querySelector("b").textContent=cart[id];
+    d.querySelector("strong").textContent=money(p.price*cart[id]);
+    const [m,pl]=d.querySelectorAll("button");
+    m.onclick=()=>{cart[id]--;if(cart[id]<=0)delete cart[id];saveCart()};
+    pl.onclick=()=>{cart[id]++;saveCart()};
+    items.append(d);
+  });
+  $("#total").textContent=money(total);
+  const c=$("#count");c.textContent=n;c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump");
+}
+$("#cartBtn").onclick=()=>drawer.classList.add("open");
+$("#closeCart").onclick=()=>drawer.classList.remove("open");
+addEventListener("keydown",e=>{if(e.key==="Escape")drawer.classList.remove("open")});
+$("#checkout").onclick=async()=>{
+  const items=Object.keys(cart).map(id=>({product_id:+id,name:PRODUCTS.find(p=>p.id==id).name,qty:cart[id]}));
+  if(!items.length) return toast("Tu carrito está vacío");
+  if(!apiOn()){toast("Falta configurar API_URL");return}
+  toast("Enviando pedido… el servidor puede tardar al despertar");
+  try{
+    await api("/orders",{items,total:items.reduce((s,i)=>s+PRODUCTS.find(p=>p.id==i.product_id).price*i.qty,0)});
+    cart={};saveCart();drawer.classList.remove("open");toast("¡Pedido enviado!");
+  }catch{toast("No se pudo enviar. Intenta de nuevo.")}
+};
+renderCart();
 
-            try {
-                const respuesta = await fetch('https://cafeteria-pueba.onrender.com', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orden)
-                });
+/* ========= COMENTARIOS ========= */
+let comments = ls.get("comments",[]);
+function drawComments(){
+  const l=$("#clist");l.textContent="";
+  if(!comments.length){const e=document.createElement("p");e.className="empty";e.textContent="Sé la primera persona en comentar.";l.append(e)}
+  comments.slice().reverse().forEach(c=>{
+    const d=document.createElement("div");d.className="cm";
+    d.innerHTML="<strong></strong> <small></small><p></p>";
+    d.children[0].textContent=c.name;
+    d.children[1].textContent=c.date||"";
+    d.children[2].textContent=c.text;
+    l.append(d);
+  });
+}
+$("#cform").onsubmit=e=>{
+  e.preventDefault();
+  const c={name:$("#cname").value.trim(),text:$("#ctext").value.trim(),date:new Date().toLocaleDateString("es-MX")};
+  if(!c.name||!c.text)return;
+  comments.push(c);ls.set("comments",comments);drawComments();e.target.reset();toast("Comentario publicado");
+  api("/comments",c).catch(()=>{});
+};
+drawComments();
+api("/comments").then(r=>{if(Array.isArray(r)&&r.length){comments=r;drawComments()}}).catch(()=>{});
 
-                if (respuesta.ok) {
-                    alert(`¡Orden enviada con éxito a la cocina!\n${orden.articulos} por $${precio}`);
-                } else {
-                    alert("El servidor recibió la petición pero hubo un problema. Revisa los logs de Render.");
-                }
+/* ========= APARICIÓN AL HACER SCROLL ========= */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
 
-            } catch (error) {
-                console.error("Error de conexión:", error);
-                alert("No se pudo conectar con el servidor. Verifica tu conexión a internet.");
-            }
-        }
-
-        // 4. Lógica para manejar el formulario de reseñas
-        const formularioResena = document.getElementById('formulario-resena');
-        formularioResena.addEventListener('submit', function(evento) {
-            evento.preventDefault();
-            
-            const calificacion = document.getElementById('input-calificacion').value;
-            const comentario = document.getElementById('input-comentario').value;
-
-            if(comentario.trim() === "") {
-                alert("Por favor escribe un comentario.");
-                return;
-            }
-
-            console.log("Reseña capturada:", { calificacion, comentario });
-            alert("¡Gracias por tu reseña! (Esto solo se imprime en consola por ahora)");
-            
-            document.getElementById('input-calificacion').value = "5";
-            document.getElementById('input-comentario').value = "";
-        });
-    </script>
+/* ========= LÍQUIDO QUE SIGUE AL MOUSE ========= */
+if(!RM){
+  const cv=$("#liquid"),cx=cv.getContext("2d"),S=.5;
+  let W,H,parts=[],px=null,py=null,run=false;
+  const size=()=>{W=cv.width=innerWidth*S;H=cv.height=innerHeight*S};
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",e=>{
+    const x=e.clientX*S,y=e.clientY*S;
+    if(px===null){px=x;py=y}
+    const dx=x-px,dy=y-py,d=Math.hypot(dx,dy),n=Math.min(6,1+(d/8|0));
+    for(let i=0;i<n;i++)parts.push({x:px+dx*i/n,y:py+dy*i/n,vx:dx*.06+(Math.random()-.5)*1.2,vy:dy*.06+(Math.random()-.5)*1.2,r:9+Math.min(d,50)*.35,l:1});
+    px=x;py=y;
+    if(!run){run=true;requestAnimationFrame(tick)}
+  },{passive:true});
+  function tick(t){
+    cx.clearRect(0,0,W,H);
+    parts=parts.filter(p=>p.l>0);
+    for(const p of parts){
+      p.x+=p.vx;p.y+=p.vy;p.vx*=.94;p.vy*=.94;p.l-=.02;
+      cx.fillStyle=`hsl(${18+40*Math.sin(t/900+p.x/80)} 100% 58%)`;
+      cx.beginPath();cx.arc(p.x,p.y,Math.max(p.r*p.l,0),0,6.283);cx.fill();
+    }
+    if(parts.length)requestAnimationFrame(tick);else{run=false;cx.clearRect(0,0,W,H)}
+  }
+}
+</script>
 </body>
 </html>
